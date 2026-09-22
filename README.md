@@ -1,3 +1,11 @@
+## Attribution
+This project is built on top of [OWASP NodeGoat](https://github.com/OWASP/NodeGoat),
+an intentionally vulnerable Node.js application used for security training.
+Base application code is © OWASP under the NodeGoat license (Apache 2.0).
+All threat modelling, exploit demonstrations, secure coding fixes, CI/CD
+pipeline, and secrets management in this repository are original work by
+[Group name / members] for IE3142 DevOps Security, SLIIT.
+
 # NodeGoat
 
 Being lightweight, fast, and scalable, Node.js is becoming a widely adopted platform for developing web applications. This project provides an environment to learn how OWASP Top 10 security risks apply to web applications developed using Node.js and how to effectively address them.
@@ -160,3 +168,4 @@ Here are the amazing [contributors](https://github.com/OWASP/NodeGoat/graphs/con
 ## License
 
 Code licensed under the [Apache License v2.0.](http://www.apache.org/licenses/LICENSE-2.0)
+
