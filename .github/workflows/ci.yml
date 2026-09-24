@@ -37,3 +37,14 @@ jobs:
       - uses: gitleaks/gitleaks-action@v2
         env:
           GITLEAKS_ENABLE_UPLOAD_ARTIFACT: false
+
+  container-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t nodegoat:ci .
+      - uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'nodegoat:ci'
+          severity: 'CRITICAL,HIGH'
+          exit-code: '0'   # still warn-only today
