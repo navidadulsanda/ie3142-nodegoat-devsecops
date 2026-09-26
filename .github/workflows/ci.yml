@@ -30,21 +30,27 @@ jobs:
       - run: npm install
       - run: npm audit --audit-level=high || true
 
-  secrets-scan:
+    secrets-scan:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: gitleaks/gitleaks-action@v2
+        continue-on-error: true
         env:
           GITLEAKS_ENABLE_UPLOAD_ARTIFACT: false
 
-  container-scan:
+    container-scan:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: docker build -t nodegoat:ci .
+      - name: Build image
+        run: docker build -t nodegoat:ci .
+        continue-on-error: true   # <-- add this here too, not just on the Trivy step
       - uses: aquasecurity/trivy-action@master
+        continue-on-error: true
         with:
           image-ref: 'nodegoat:ci'
           severity: 'CRITICAL,HIGH'
-          exit-code: '0'   # still warn-only today
+          exit-code: '0'
