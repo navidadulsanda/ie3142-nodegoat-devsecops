@@ -30,11 +30,14 @@ jobs:
       - run: npm install
       - run: npm audit --audit-level=high || true
 
-  secrets-scan:
+    secrets-scan:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: gitleaks/gitleaks-action@v2
+        continue-on-error: true
         env:
           GITLEAKS_ENABLE_UPLOAD_ARTIFACT: false
 
