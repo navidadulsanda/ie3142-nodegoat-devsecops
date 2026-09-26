@@ -1,8 +1,12 @@
 name: CI
 on: [push, pull_request]
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    env:
+      MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -15,14 +19,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python (Semgrep needs it)
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
       - name: Run Semgrep
         run: |
           pip install semgrep
-          semgrep --config p/owasp-top-ten --config p/nodejs . || true  
+          semgrep --config p/owasp-top-ten --config p/nodejs . || true
+
   dependency-scan:
     runs-on: ubuntu-latest
     steps:
@@ -30,7 +34,7 @@ jobs:
       - run: npm install
       - run: npm audit --audit-level=high || true
 
-    secrets-scan:
+  secrets-scan:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -41,13 +45,13 @@ jobs:
         env:
           GITLEAKS_ENABLE_UPLOAD_ARTIFACT: false
 
-    container-scan:
+  container-scan:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Build image
         run: docker build -t nodegoat:ci .
-        continue-on-error: true   # <-- add this here too, not just on the Trivy step
+        continue-on-error: true
       - uses: aquasecurity/trivy-action@master
         continue-on-error: true
         with:
