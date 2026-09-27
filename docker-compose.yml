@@ -1,5 +1,3 @@
-version: "3.7"
-
 services:
   web:
     build: .
@@ -8,7 +6,7 @@ services:
       MONGODB_URI: mongodb://mongo:27017/nodegoat
       SESSION_SECRET: ${SESSION_SECRET}
       CRYPTO_KEY: ${CRYPTO_KEY}
-        command: sh -c "until nc -z -w 2 mongo 27017 && echo 'mongo is ready for connections'; do sleep 2; done; npm start"
+    command: sh -c "until nc -z -w 2 mongo 27017; do sleep 2; done; npm start"
     ports:
       - "4000:4000"
 
