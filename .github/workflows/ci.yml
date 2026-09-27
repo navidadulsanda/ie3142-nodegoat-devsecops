@@ -7,6 +7,7 @@ jobs:
     env:
       MONGODB_URI: ${{ secrets.MONGODB_URI }}
       SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+      CRYPTO_KEY: ${{ secrets.CRYPTO_KEY }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
