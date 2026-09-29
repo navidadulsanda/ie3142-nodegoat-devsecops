@@ -1,0 +1,14 @@
+SAST note for IDOR (Threat #2):
+
+The before/after Semgrep scan (owasp-top-ten + nodejs + security-audit
+rulesets, plus our custom .semgrep ruleset) showed no difference for
+the IDOR fix in allocations.js. This is expected: IDOR is a
+logic-level access control flaw (trusting req.params.userId instead
+of req.session.userId), not a dangerous function call or unsafe
+syntax pattern that static analysis rules can pattern-match against.
+Both the vulnerable and fixed versions are syntactically ordinary
+JavaScript — only the source of one variable differs. This
+vulnerability was identified and verified through manual source
+review and live exploitation instead (see idor-01/02/03 screenshots
+in this folder), which is the correct detection method for
+authorization-logic flaws of this kind.
