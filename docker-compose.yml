@@ -1,11 +1,12 @@
 services:
   web:
     build: .
+    container_name: nodegoat-app
     environment:
       NODE_ENV:
-      MONGODB_URI: mongodb://mongo:27017/nodegoat
-      SESSION_SECRET: ${SESSION_SECRET}
-      CRYPTO_KEY: ${CRYPTO_KEY}
+      MONGODB_URI: mongodb://${MONGO_USER:?}:${MONGO_PASSWORD:?}@mongo:27017/nodegoat?authSource=admin
+      SESSION_SECRET: ${SESSION_SECRET:?SESSION_SECRET is not set - copy .env.example to .env}
+      CRYPTO_KEY: ${CRYPTO_KEY:?CRYPTO_KEY is not set - copy .env.example to .env}
     command: sh -c "until nc -z -w 2 mongo 27017; do sleep 2; done; node artifacts/db-reset.js && npm start"
     ports:
       - "4000:4000"
@@ -15,3 +16,6 @@ services:
     user: mongodb
     expose:
       - 27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER:?}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:?}
