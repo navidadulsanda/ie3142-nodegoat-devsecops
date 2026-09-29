@@ -26,7 +26,7 @@ jobs:
       - name: Run Semgrep (blocking)
         run: |
           pip install semgrep
-          semgrep --config p/owasp-top-ten --config p/nodejs --error --severity ERROR .
+                semgrep --config p/owasp-top-ten --config p/nodejs --config p/security-audit --config .semgrep/no-eval.yml --error --severity ERROR .
 
   dependency-scan:
     runs-on: ubuntu-latest
