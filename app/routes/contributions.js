@@ -31,10 +31,7 @@ function ContributionsHandler(db) {
         const preTax = parseInt(req.body.preTax);
         const afterTax = parseInt(req.body.afterTax);
         const roth = parseInt(req.body.roth);
-
-        // TEMPORARY - testing SAST gate, will be reverted
-        eval("1+1");
-
+        
         
         const {
             userId
