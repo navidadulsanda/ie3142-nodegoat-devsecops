@@ -1,0 +1,16 @@
+# Upstream OWASP NodeGoat demo TLS private key, shipped by the
+# original project in artifacts/cert/server.key for local HTTPS
+# testing only. Present since our initial import commit f587b55.
+# This is a known public demo value from OWASP's own repo, not a
+# real secret, and not used in our deployed configuration.
+f587b55b63b201751c46fc59cd5c711811b69fef:artifacts/cert/server.key:private-key:1
+
+# Upstream OWASP NodeGoat demo ZAP API key, hardcoded in
+# config/env/development.js as shipped by the original project.
+# Same provenance as above — public demo value, not a live secret.
+f587b55b63b201751c46fc59cd5c711811b69fef:config/env/development.js:generic-api-key:6
+
+# Same upstream OWASP NodeGoat demo ZAP API key, also hardcoded in
+# config/env/test.js by the original project. Identical value to
+# the development.js finding above — not a real secret.
+f587b55b63b201751c46fc59cd5c711811b69fef:config/env/test.js:generic-api-key:6
