@@ -1,0 +1,16 @@
+rules:
+  - id: no-eval-nodegoat
+    languages: [javascript]
+    severity: ERROR
+    message: >
+      Use of eval() detected. eval() executes arbitrary code and must never
+      be called on data derived from user input. Replace with a safe parser
+      (e.g. parseInt for numbers, or a dedicated expression evaluator such
+      as mathjs) instead.
+    patterns:
+      - pattern: eval(...)
+    metadata:
+      category: security
+      cwe: "CWE-95: Improper Neutralization of Directives in Dynamically Evaluated Code ('Eval Injection')"
+      references:
+        - https://owasp.org/www-community/attacks/Code_Injection
