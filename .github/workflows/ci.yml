@@ -68,7 +68,7 @@ jobs:
       - name: Build image
         run: docker build -t nodegoat:ci .
       - name: Trivy scan (visible, non-blocking)
-        uses: aquasecurity/trivy-action@57a97c7
+        uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1
         with:
           image-ref: 'nodegoat:ci'
           severity: 'CRITICAL,HIGH'
