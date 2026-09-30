@@ -1,0 +1,12 @@
+rules:
+  - id: no-autoescape-false
+    languages: [javascript]
+    severity: ERROR
+    message: >
+      Swig template auto-escaping is disabled (autoescape: false). This
+      allows user-controlled data rendered in templates to be interpreted
+      as raw HTML, enabling stored and reflected XSS attacks.
+    pattern-regex: 'autoescape\s*:\s*false'
+    metadata:
+      cwe: "CWE-79: Improper Neutralization of Input During Web Page Generation"
+      owasp: "A03:2021 - Injection"
