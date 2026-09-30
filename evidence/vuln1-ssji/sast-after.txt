@@ -1,0 +1,193 @@
+                    
+                    
+┌──────────────────┐
+│ 22 Code Findings │
+└──────────────────┘
+                                 
+    /src/.github/workflows/ci.yml
+    ❯❱ yaml.github-actions.security.github-actions-mutable-action-tag.github-actions-mutable-action-tag
+          ❰❰ Blocking ❱❱
+          GitHub Actions step uses a mutable tag or branch reference. Tags and branch names can be silently   
+          repointed by the action owner, enabling supply-chain attacks — as seen in the trivy-action and kics-
+          github-action compromises. Pin the reference to a full 40-character commit SHA instead, e.g. `uses: 
+          actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608`.                                         
+          Details: https://sg.run/2LgAL                                                                       
+                                                                                                              
+           12┆ - uses: actions/checkout@v4
+            ⋮┆----------------------------------------
+           13┆ - uses: actions/setup-node@v4
+            ⋮┆----------------------------------------
+           22┆ - uses: actions/checkout@v4
+            ⋮┆----------------------------------------
+           23┆ - uses: actions/setup-python@v5
+            ⋮┆----------------------------------------
+           34┆ - uses: actions/checkout@v4
+            ⋮┆----------------------------------------
+           41┆ - uses: actions/checkout@v4
+            ⋮┆----------------------------------------
+           44┆ - uses: gitleaks/gitleaks-action@v2
+            ⋮┆----------------------------------------
+           52┆ - uses: actions/checkout@v4
+            ⋮┆----------------------------------------
+           56┆ - uses: aquasecurity/trivy-action@master
+                            
+    /src/app/routes/index.js
+    ❯❱ javascript.express.security.audit.express-open-redirect.express-open-redirect
+          ❰❰ Blocking ❱❱
+          The application redirects to a URL specified by user-supplied input `req` that is not validated.   
+          This could redirect users to malicious locations. Consider using an allow-list approach to validate
+          URLs, or warn users they are being redirected to a third-party website.                            
+          Details: https://sg.run/EpoP                                                                       
+                                                                                                             
+           72┆ return res.redirect(req.query.url);
+                               
+    /src/app/views/profile.html
+    ❯❱ generic.html-templates.security.var-in-href.var-in-href
+          ❰❰ Blocking ❱❱
+          Detected a template variable used in an anchor tag with the 'href' attribute. This allows a       
+          malicious actor to input the 'javascript:' URI and is subject to cross- site scripting (XSS)      
+          attacks. If using Flask, use 'url_for()' to safely generate a URL. If using Django, use the 'url' 
+          filter to safely generate a URL. If using Mustache, use a URL encoding library, or prepend a slash
+          '/' to the variable for relative links (`href="/{{link}}"`). You may also consider setting the    
+          Content Security Policy (CSP) header.                                                             
+          Details: https://sg.run/x1kP                                                                      
+                                                                                                            
+           78┆ <a href="{{firstNameSafeString}}">Google search this profile by name</a>
+                                   
+    /src/app/views/tutorial/a2.html
+    ❯❱ html.security.plaintext-http-link.plaintext-http-link
+          ❰❰ Blocking ❱❱
+          This link points to a plaintext HTTP URL. Prefer an encrypted HTTPS URL if possible.
+          Details: https://sg.run/RA5q                                                        
+                                                                                              
+          207┆ <li><a href="http://recxltd.blogspot.sg/2012/03/seven-web-server-http-headers-             
+               that.html">Seven Web Server HTTP Headers that Improve Web Application Security for Free</a>
+            ⋮┆----------------------------------------
+          209┆ <li><a href="http://passportjs.org/guide/authenticate/">Passport</a> authentication
+               middleware</li>                                                                    
+            ⋮┆----------------------------------------
+          210┆ <li><a href="http://en.wikipedia.org/wiki/Session_fixation">CWE-384: Session Fixation</a>
+                                   
+    /src/app/views/tutorial/a5.html
+    ❯❱ html.security.plaintext-http-link.plaintext-http-link
+          ❰❰ Blocking ❱❱
+          This link points to a plaintext HTTP URL. Prefer an encrypted HTTPS URL if possible.
+          Details: https://sg.run/RA5q                                                        
+                                                                                              
+           50┆ Use latest stable version of node.js and express (or other web framework you are using).
+               Keep a watch on published vulnerabilities of these. The vulnerabilities for node.js and 
+               express.js can be found <a href="http://blog.nodejs.org/vulnerability/">here</a> and    
+            ⋮┆----------------------------------------
+           51┆ <a href="http://expressjs.com/advanced/security-updates.html">here</a>, respectively.
+                  
+    /src/server.js
+    ❯❱ javascript.express.security.audit.express-cookie-settings.express-cookie-session-default-name
+          ❰❰ Blocking ❱❱
+          Don’t use the default session cookie name Using the default session cookie name can open your app to
+          attacks. The security issue posed is similar to X-Powered-By: a potential attacker can use it to    
+          fingerprint the server and target attacks accordingly.                                              
+          Details: https://sg.run/1Z5x                                                                        
+                                                                                                              
+           78┆ app.use(session({
+           79┆     // genid: (req) => {
+           80┆     //    return genuuid() // use UUIDs for session IDs
+           81┆     //},
+           82┆     secret: cookieSecret,
+           83┆     // Both mandatory in Express v4
+           84┆     saveUninitialized: true,
+           85┆     resave: true
+           86┆     /*
+           87┆     // Fix for A5 - Security MisConfig
+             [hid 15 additional lines, adjust with --max-lines-per-finding] 
+   
+    ❯❱ javascript.express.security.audit.express-cookie-settings.express-cookie-session-no-domain
+          ❰❰ Blocking ❱❱
+          Default session middleware settings: `domain` not set. It indicates the domain of the cookie; use it
+          to compare against the domain of the server in which the URL is being requested. If they match, then
+          check the path attribute next.                                                                      
+          Details: https://sg.run/rd41                                                                        
+                                                                                                              
+           78┆ app.use(session({
+           79┆     // genid: (req) => {
+           80┆     //    return genuuid() // use UUIDs for session IDs
+           81┆     //},
+           82┆     secret: cookieSecret,
+           83┆     // Both mandatory in Express v4
+           84┆     saveUninitialized: true,
+           85┆     resave: true
+           86┆     /*
+           87┆     // Fix for A5 - Security MisConfig
+             [hid 15 additional lines, adjust with --max-lines-per-finding] 
+   
+    ❯❱ javascript.express.security.audit.express-cookie-settings.express-cookie-session-no-expires
+          ❰❰ Blocking ❱❱
+          Default session middleware settings: `expires` not set. Use it to set expiration date for persistent
+          cookies.                                                                                            
+          Details: https://sg.run/N4eG                                                                        
+                                                                                                              
+           78┆ app.use(session({
+           79┆     // genid: (req) => {
+           80┆     //    return genuuid() // use UUIDs for session IDs
+           81┆     //},
+           82┆     secret: cookieSecret,
+           83┆     // Both mandatory in Express v4
+           84┆     saveUninitialized: true,
+           85┆     resave: true
+           86┆     /*
+           87┆     // Fix for A5 - Security MisConfig
+             [hid 15 additional lines, adjust with --max-lines-per-finding] 
+   
+    ❯❱ javascript.express.security.audit.express-cookie-settings.express-cookie-session-no-httponly
+          ❰❰ Blocking ❱❱
+          Default session middleware settings: `httpOnly` not set. It ensures the cookie is sent only over
+          HTTP(S), not client JavaScript, helping to protect against cross-site scripting attacks.        
+          Details: https://sg.run/ydBO                                                                    
+                                                                                                          
+           78┆ app.use(session({
+           79┆     // genid: (req) => {
+           80┆     //    return genuuid() // use UUIDs for session IDs
+           81┆     //},
+           82┆     secret: cookieSecret,
+           83┆     // Both mandatory in Express v4
+           84┆     saveUninitialized: true,
+           85┆     resave: true
+           86┆     /*
+           87┆     // Fix for A5 - Security MisConfig
+             [hid 15 additional lines, adjust with --max-lines-per-finding] 
+   
+    ❯❱ javascript.express.security.audit.express-cookie-settings.express-cookie-session-no-path
+          ❰❰ Blocking ❱❱
+          Default session middleware settings: `path` not set. It indicates the path of the cookie; use it to
+          compare against the request path. If this and domain match, then send the cookie in the request.   
+          Details: https://sg.run/b7pd                                                                       
+                                                                                                             
+           78┆ app.use(session({
+           79┆     // genid: (req) => {
+           80┆     //    return genuuid() // use UUIDs for session IDs
+           81┆     //},
+           82┆     secret: cookieSecret,
+           83┆     // Both mandatory in Express v4
+           84┆     saveUninitialized: true,
+           85┆     resave: true
+           86┆     /*
+           87┆     // Fix for A5 - Security MisConfig
+             [hid 15 additional lines, adjust with --max-lines-per-finding] 
+   
+    ❯❱ javascript.express.security.audit.express-cookie-settings.express-cookie-session-no-secure
+          ❰❰ Blocking ❱❱
+          Default session middleware settings: `secure` not set. It ensures the browser only sends the cookie
+          over HTTPS.                                                                                        
+          Details: https://sg.run/9oKz                                                                       
+                                                                                                             
+           78┆ app.use(session({
+           79┆     // genid: (req) => {
+           80┆     //    return genuuid() // use UUIDs for session IDs
+           81┆     //},
+           82┆     secret: cookieSecret,
+           83┆     // Both mandatory in Express v4
+           84┆     saveUninitialized: true,
+           85┆     resave: true
+           86┆     /*
+           87┆     // Fix for A5 - Security MisConfig
+             [hid 15 additional lines, adjust with --max-lines-per-finding] 
+
