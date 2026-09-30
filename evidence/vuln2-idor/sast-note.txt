@@ -9,6 +9,6 @@ syntax pattern that static analysis rules can pattern-match against.
 Both the vulnerable and fixed versions are syntactically ordinary
 JavaScript — only the source of one variable differs. This
 vulnerability was identified and verified through manual source
-review and live exploitation instead (see idor-01/02/03 screenshots
-in this folder), which is the correct detection method for
+review and live exploitation instead (see exploit screenshots in the
+accompanying report), which is the correct detection method for
 authorization-logic flaws of this kind.
