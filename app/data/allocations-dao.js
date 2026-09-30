@@ -55,35 +55,19 @@ const AllocationsDAO = function(db){
     };
 
     this.getByUserIdAndThreshold = (userId, threshold, callback) => {
-        const parsedUserId = parseInt(userId);
+        const parsedUserId = parseInt(userId, 10);
+        let searchCriteria = { userId: parsedUserId };
 
-        const searchCriteria = () => {
-
-            if (threshold) {
-                /*
-                // Fix for A1 - 2 NoSQL Injection - escape the threshold parameter properly
-                // Fix this NoSQL Injection which doesn't sanitze the input parameter 'threshold' and allows attackers
-                // to inject arbitrary javascript code into the NoSQL query:
-                // 1. 0';while(true){}'
-                // 2. 1'; return 1 == '1
-                // Also implement fix in allocations.html for UX.                             
-                const parsedThreshold = parseInt(threshold, 10);
-                
-                if (parsedThreshold >= 0 && parsedThreshold <= 99) {
-                    return {$where: `this.userId == ${parsedUserId} && this.stocks > ${parsedThreshold}`};
-                }
-                throw `The user supplied threshold: ${parsedThreshold} was not valid.`;
-                */
-                return {
-                    $where: `this.userId == ${parsedUserId} && this.stocks > '${threshold}'`
-                };
+        if (threshold !== undefined && threshold !== "") {
+            // Allow-list: a whole number 0-99 only. Rejects strings, arrays and objects
+            if (typeof threshold !== "string" || !/^\d{1,2}$/.test(threshold)) {
+                return callback("Invalid threshold: enter a whole number from 0 to 99", null);
             }
-            return {
-                userId: parsedUserId
-            };
-        };
+            // Query operators instead of $where: data is never executed as code
+            searchCriteria = { userId: parsedUserId, stocks: { $gt: parseInt(threshold, 10) } };
+        }
 
-        allocationsCol.find(searchCriteria()).toArray((err, allocations) => {
+        allocationsCol.find(searchCriteria).toArray((err, allocations) => {
             if (err) return callback(err, null);
             if (!allocations.length) return callback("ERROR: No allocations found for the user", null);
 

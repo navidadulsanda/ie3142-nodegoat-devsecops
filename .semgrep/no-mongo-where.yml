@@ -1,0 +1,12 @@
+rules:
+  - id: no-mongo-where
+    languages: [javascript]
+    severity: ERROR
+    message: >
+      MongoDB $where executes JavaScript on the database server. Building it
+      from request data allows NoSQL injection. Use query operators such as
+      $gt with validated numbers instead.
+    pattern-regex: '^\s*\$where\s*:'
+    metadata:
+      cwe: "CWE-943: Improper Neutralization of Special Elements in Data Query Logic"
+      owasp: "A03:2021 - Injection"
