@@ -92,7 +92,15 @@ function ProfileHandler(db) {
             bankAcc,
             bankRouting,
             (err, user) => {
-                // ... unchanged
+                if (err) return next(err);
+
+                user.updateSuccess = true;
+                user.userId = userId;
+
+                return res.render("profile", {
+                    ...user,
+                    environmentalScripts
+                });
             }
         );
 
