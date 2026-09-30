@@ -12,6 +12,8 @@ jobs:
         env:
           SESSION_SECRET: ci-not-a-real-secret
           CRYPTO_KEY: ci-not-a-real-secret
+          MONGO_USER: ci-not-a-real-user
+          MONGO_PASSWORD: ci-not-a-real-password
         run: |
           docker compose up -d --build
           for i in $(seq 1 30); do
@@ -56,6 +58,7 @@ jobs:
       - name: Gitleaks (blocking)
         uses: gitleaks/gitleaks-action@v2
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITLEAKS_ENABLE_UPLOAD_ARTIFACT: false
 
   container-scan:
@@ -65,7 +68,7 @@ jobs:
       - name: Build image
         run: docker build -t nodegoat:ci .
       - name: Trivy scan (visible, non-blocking)
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@57a97c7
         with:
           image-ref: 'nodegoat:ci'
           severity: 'CRITICAL,HIGH'
